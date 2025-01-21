@@ -14,6 +14,7 @@ class Config:
         self.test_output_dir = r'C:\Users\admin\Desktop\project\result'
         self.save_model_path_dir = r'C:\Users\admin\Desktop\project\result'
 
+        self.split_rate = 0.7
         self.pretrained_model = 'bert-base-uncased'
         self.hidden_size = 256
         self.num_heads = 8

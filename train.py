@@ -47,7 +47,7 @@ def train(config):
     tokenizer = BertTokenizer.from_pretrained(config.pretrained_model)
     train_dataset = ImageTextDataset(config.image_data_dir, config.train_file, tokenizer, max_seq_length=config.max_seq_length, mode='train')
 
-    train_size = int(0.7 * len(train_dataset))
+    train_size = int(config.split_rate * len(train_dataset))
     val_size = len(train_dataset) - train_size
     train_dataset, val_dataset = random_split(train_dataset, [train_size, val_size])
 
@@ -63,6 +63,9 @@ def train(config):
     criterion = torch.nn.CrossEntropyLoss()
 
     def train_model(model, optimizer, dataloader, device):
+        """
+        使用训练集训练模型
+        """
         model.train()
         running_loss = 0.0
         running_accuracy = 0.0
@@ -87,6 +90,9 @@ def train(config):
         return avg_loss, avg_accuracy
 
     def validate_model(model, dataloader, device):
+        """
+        对模型进行验证
+        """
         model.eval()
         val_loss = 0.0
         val_accuracy = 0.0
@@ -123,6 +129,7 @@ def train(config):
     best_model_paths = {"image_only": "", "text_only": "", "multimodal": ""}
 
     for epoch in range(config.epochs):
+        # 一次性共训练三个模型
         print(f"Epoch {epoch + 1}/{config.epochs}")
         for model_name, model in models.items():
             print(f"Training {model_name} model...")

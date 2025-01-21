@@ -96,8 +96,8 @@ class ImageTextDataset(Dataset):
             text = f.read().strip()
 
         # 尝试使用文本数据增强
-        # if self.mode == 'train':
-        #     text = synonym_replacement(text, n=1)  # 同义词替换
+        if self.mode == 'train':
+            text = synonym_replacement(text, n=1)
 
         return text
 
@@ -137,18 +137,21 @@ class ImageTextDataset(Dataset):
             ])
         return transform(image)
 
-# def synonym_replacement(text, n=1):
-#     words = text.split()
-#     new_words = words.copy()
-#     random_word_list = list(set([word for word in words if wordnet.synsets(word)]))
-#     random.shuffle(random_word_list)
-#     num_replaced = 0
-#     for random_word in random_word_list:
-#         synonyms = wordnet.synsets(random_word)
-#         if synonyms:
-#             synonym = random.choice(synonyms).lemmas()[0].name()
-#             new_words = [synonym if word == random_word else word for word in new_words]
-#             num_replaced += 1
-#         if num_replaced >= n:
-#             break
-#     return ' '.join(new_words)
+def synonym_replacement(text, n=1):
+    """
+    同义词替换
+    """
+    words = text.split()
+    new_words = words.copy()
+    random_word_list = list(set([word for word in words if wordnet.synsets(word)]))
+    random.shuffle(random_word_list)
+    num_replaced = 0
+    for random_word in random_word_list:
+        synonyms = wordnet.synsets(random_word)
+        if synonyms:
+            synonym = random.choice(synonyms).lemmas()[0].name()
+            new_words = [synonym if word == random_word else word for word in new_words]
+            num_replaced += 1
+        if num_replaced >= n:
+            break
+    return ' '.join(new_words)

@@ -5,7 +5,7 @@ from torchvision import models
 
 class BERTEmotionModel(nn.Module):
     """
-    基于预训练后的BERT模型提取文本的特征
+    基于预训练后的BERT模型，提取文本的特征
     """
     def __init__(self, pretrained_model_name='bert-base-uncased', hidden_size=256, dropout_rate=0.3):
         super(BERTEmotionModel, self).__init__()
@@ -24,7 +24,7 @@ class BERTEmotionModel(nn.Module):
 
 class ResNetEmotionModel(nn.Module):
     """
-    基于预训练后的ResNet模型提取图像的特征
+    基于预训练后的ResNet模型，提取图像的特征
     """
     def __init__(self, pretrained=True):
         super(ResNetEmotionModel, self).__init__()
